@@ -33,6 +33,16 @@ struct DiaperEntry: Identifiable, Codable {
     var note: String?
 }
 
+
+struct GrowthEntry: Identifiable, Codable {
+    let id: UUID
+    var babyId: UUID
+    var time: Date
+    var heightCM: Double
+    var weightKG: Double
+    var headCircumferenceCM: Double
+}
+
 struct TimelineItem: Identifiable {
     let id: UUID
     let type: EntryType

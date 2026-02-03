@@ -10,6 +10,7 @@ final class Persistence {
 
     private var feedURL: URL { baseURL.appendingPathComponent("feedings.json") }
     private var diaperURL: URL { baseURL.appendingPathComponent("diapers.json") }
+    private var growthURL: URL { baseURL.appendingPathComponent("growth.json") }
 
     func saveFeedings(_ items: [FeedingEntry]) {
         save(items, to: feedURL)
@@ -25,6 +26,14 @@ final class Persistence {
 
     func loadDiapers() -> [DiaperEntry] {
         load(from: diaperURL) ?? []
+    }
+
+    func saveGrowth(_ items: [GrowthEntry]) {
+        save(items, to: growthURL)
+    }
+
+    func loadGrowth() -> [GrowthEntry] {
+        load(from: growthURL) ?? []
     }
 
     private func save<T: Codable>(_ items: [T], to url: URL) {
