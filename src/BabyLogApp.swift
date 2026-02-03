@@ -4,7 +4,7 @@ import SwiftUI
 struct BabyLogApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
         }
     }
 }
