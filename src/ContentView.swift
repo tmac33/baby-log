@@ -27,6 +27,12 @@ struct ContentView: View {
         NavigationView {
             VStack(spacing: 16) {
                 summaryCard
+                Picker("Baby", selection: $store.selectedBabyId) {
+                    ForEach(store.babies) { b in
+                        Text(b.name).tag(Optional(b.id))
+                    }
+                }
+                .pickerStyle(.segmented)
                 Picker("Range", selection: $selectedRange) {
                     ForEach(TimeRange.allCases, id: \.self) { r in
                         Text(r.rawValue).tag(r)
@@ -57,11 +63,11 @@ struct ContentView: View {
 
     
     private var filteredFeedings: [FeedingEntry] {
-        filterFeedings(store.feedings, range: selectedRange)
+        filterFeedings(store.currentFeedings, range: selectedRange)
     }
 
     private var filteredDiapers: [DiaperEntry] {
-        filterDiapers(store.diapers, range: selectedRange)
+        filterDiapers(store.currentDiapers, range: selectedRange)
     }
 
     private func filterFeedings(_ items: [FeedingEntry], range: TimeRange) -> [FeedingEntry] {
@@ -114,13 +120,13 @@ struct ContentView: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Last Feed")
-                    Text(store.feedings.first.map { "\($0.amountML) ml" } ?? "-")
+                    Text(store.currentFeedings.first.map { "\($0.amountML) ml" } ?? "-")
                         .font(.subheadline)
                 }
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Last Diaper")
-                    Text(store.diapers.first?.type.rawValue.capitalized ?? "-")
+                    Text(store.currentDiapers.first?.type.rawValue.capitalized ?? "-")
                         .font(.subheadline)
                 }
             }

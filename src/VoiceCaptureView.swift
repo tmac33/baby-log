@@ -5,6 +5,7 @@ struct VoiceCaptureView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var store: LogStore
     @State private var transcript = ""
+    @State private var selectedLang: String = "zh-CN"
     @State private var parsed: ParsedCommand? = nil
     private let parser = VoiceParser()
 
@@ -14,13 +15,19 @@ struct VoiceCaptureView: View {
                 Text("Voice Input")
                     .font(.headline)
 
+                Picker("Language", selection: $selectedLang) {
+                    Text("中文").tag("zh-CN")
+                    Text("English").tag("en-US")
+                }
+                .pickerStyle(.segmented)
+
                 HStack {
                     Button(recognizer.isRecording ? "Stop" : "Record") {
                         if recognizer.isRecording {
                             recognizer.stop()
                         } else {
                             recognizer.requestPermission { ok in
-                                if ok { recognizer.start() }
+                                if ok { recognizer.setLocale(Locale(identifier: selectedLang)); recognizer.start() }
                             }
                         }
                     }

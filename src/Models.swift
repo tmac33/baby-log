@@ -1,5 +1,11 @@
 import Foundation
 
+
+struct Baby: Identifiable, Codable, Equatable {
+    let id: UUID
+    var name: String
+}
+
 enum EntryType: String, Codable {
     case feeding
     case diaper
@@ -13,6 +19,7 @@ enum DiaperType: String, Codable, CaseIterable {
 
 struct FeedingEntry: Identifiable, Codable {
     let id: UUID
+    var babyId: UUID
     var time: Date
     var amountML: Int
     var note: String?
@@ -20,6 +27,7 @@ struct FeedingEntry: Identifiable, Codable {
 
 struct DiaperEntry: Identifiable, Codable {
     let id: UUID
+    var babyId: UUID
     var time: Date
     var type: DiaperType
     var note: String?

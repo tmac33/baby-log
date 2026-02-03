@@ -10,7 +10,11 @@ final class VoiceRecognizer: NSObject, ObservableObject {
     private let audioEngine = AVAudioEngine()
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
-    private let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "zh-CN"))
+    private var recognizer = SFSpeechRecognizer(locale: Locale(identifier: "zh-CN"))
+
+    func setLocale(_ locale: Locale) {
+        recognizer = SFSpeechRecognizer(locale: locale)
+    }
 
     func requestPermission(completion: @escaping (Bool) -> Void) {
         SFSpeechRecognizer.requestAuthorization { auth in
