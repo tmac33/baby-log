@@ -17,6 +17,7 @@ struct ContentView: View {
     @StateObject private var store = LogStore()
     @State private var selectedRange: TimeRange = .today
     @State private var shareItem: ShareItem? = nil
+    @State private var reminderMinutes: Double = 120
     private let statsCalc = StatsCalculator()
     private let exporter = CSVExporter()
     @State private var showAddFeed = false
@@ -41,6 +42,16 @@ struct ContentView: View {
                 .pickerStyle(.segmented)
                 dailyStatsCard
                 chartsSection
+
+                VStack(alignment: .leading) {
+                    Text("Reminder Interval: \(Int(reminderMinutes)) min")
+                        .font(.subheadline)
+                    Slider(value: $reminderMinutes, in: 30...300, step: 10)
+                }
+                .padding()
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(12)
+
                 actionBar
                 timelineList
             }
