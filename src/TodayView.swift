@@ -10,6 +10,7 @@ struct TodayView: View {
     @State private var reminderMinutes: Double = 120
     @State private var selectedRange: TimeRange = .today
     private let statsCalc = StatsCalculator()
+    private let trendCalc = TrendCalculator()
     private let exporter = CSVExporter()
 
     var body: some View {
@@ -86,8 +87,8 @@ struct TodayView: View {
         return Card {
             VStack(alignment: .leading, spacing: 6) {
                 Text("Daily Summary").font(.headline)
-                Text("Feeds: \(stats.totalFeeds)  |  Total: \(stats.totalAmountML) ml")
-                Text("Diapers: \(stats.diaperCount) (Wet \(stats.wetCount) / Dirty \(stats.dirtyCount) / Mixed \(stats.mixedCount))")
+                Text("Feeds: \(stats.totalFeeds)  |  Total: \(stats.totalAmountML) ml  \(trendCalc.compareTodayVsYesterday(feedings: store.currentFeedings, diapers: store.currentDiapers).feedChange)")
+                Text("Diapers: \(stats.diaperCount) (Wet \(stats.wetCount) / Dirty \(stats.dirtyCount) / Mixed \(stats.mixedCount))  \(trendCalc.compareTodayVsYesterday(feedings: store.currentFeedings, diapers: store.currentDiapers).diaperChange)")
             }
         }
     }

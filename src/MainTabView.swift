@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @StateObject private var store = LogStore()
+    @State private var showOnboarding: Bool = true
     @State private var selectedSex: Sex = .male
 
     var body: some View {
@@ -15,5 +16,6 @@ struct MainTabView: View {
             ScheduleView(store: store)
                 .tabItem { Label("Schedule", systemImage: "calendar") }
         }
+        .sheet(isPresented: $showOnboarding) { OnboardingView() }
     }
 }
