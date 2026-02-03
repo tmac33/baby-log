@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct VoiceCaptureView: View {
+    @StateObject private var recognizer = VoiceRecognizer()
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var store: LogStore
     @State private var transcript = ""
@@ -12,6 +13,28 @@ struct VoiceCaptureView: View {
             VStack(spacing: 16) {
                 Text("Voice Input")
                     .font(.headline)
+
+                HStack {
+                    Button(recognizer.isRecording ? "Stop" : "Record") {
+                        if recognizer.isRecording {
+                            recognizer.stop()
+                        } else {
+                            recognizer.requestPermission { ok in
+                                if ok { recognizer.start() }
+                            }
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+
+                    Button("Use Transcript") {
+                        transcript = recognizer.transcript
+                    }
+                    .buttonStyle(.bordered)
+                }
+
+                if let err = recognizer.errorMessage {
+                    Text(err).foregroundColor(.red).font(.caption)
+                }
                 TextField("Paste transcript here...", text: $transcript)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
