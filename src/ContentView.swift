@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var store = LogStore()
+    private let statsCalc = StatsCalculator()
+    private let exporter = CSVExporter()
     @State private var showAddFeed = false
     @State private var showAddDiaper = false
     @State private var showVoice = false
@@ -10,6 +12,7 @@ struct ContentView: View {
         NavigationView {
             VStack(spacing: 16) {
                 summaryCard
+                dailyStatsCard
                 actionBar
                 timelineList
             }
@@ -43,6 +46,18 @@ struct ContentView: View {
                         .font(.subheadline)
                 }
             }
+        }
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
+    }
+
+    \n    private var dailyStatsCard: some View {
+        let stats = statsCalc.stats(for: Date(), feedings: store.feedings, diapers: store.diapers)
+        return VStack(alignment: .leading, spacing: 6) {
+            Text("Daily Summary").font(.headline)
+            Text("Feeds: \(stats.totalFeeds)  |  Total: \(stats.totalAmountML) ml")
+            Text("Diapers: \(stats.diaperCount) (Wet \(stats.wetCount) / Dirty \(stats.dirtyCount) / Mixed \(stats.mixedCount))")
         }
         .padding()
         .background(Color(.secondarySystemBackground))
