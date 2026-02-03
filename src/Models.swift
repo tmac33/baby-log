@@ -43,6 +43,21 @@ struct GrowthEntry: Identifiable, Codable {
     var headCircumferenceCM: Double
 }
 
+
+enum ScheduleType: String, Codable, CaseIterable {
+    case vaccine
+    case checkup
+}
+
+struct ScheduleEntry: Identifiable, Codable {
+    let id: UUID
+    var babyId: UUID
+    var time: Date
+    var type: ScheduleType
+    var title: String
+    var note: String?
+}
+
 struct TimelineItem: Identifiable {
     let id: UUID
     let type: EntryType

@@ -7,6 +7,7 @@ final class LogStore: ObservableObject {
     @Published var feedings: [FeedingEntry] = []
     @Published var diapers: [DiaperEntry] = []
     @Published var growthEntries: [GrowthEntry] = []
+    @Published var scheduleEntries: [ScheduleEntry] = []
 
     init() {
         selectedBabyId = babies.first?.id
@@ -34,11 +35,19 @@ final class LogStore: ObservableObject {
         Persistence.shared.saveGrowth(growthEntries)
     }
 
+    func addSchedule(type: ScheduleType, title: String, time: Date, note: String? = nil) {
+        guard let babyId = selectedBabyId else { return }
+        let entry = ScheduleEntry(id: UUID(), babyId: babyId, time: time, type: type, title: title, note: note)
+        scheduleEntries.insert(entry, at: 0)
+        Persistence.shared.saveSchedule(scheduleEntries)
+    }
+
 
     private func load() {
         feedings = Persistence.shared.loadFeedings()
         diapers = Persistence.shared.loadDiapers()
         growthEntries = Persistence.shared.loadGrowth()
+        scheduleEntries = Persistence.shared.loadSchedule()
     }
 
     var currentFeedings: [FeedingEntry] {
@@ -54,6 +63,11 @@ final class LogStore: ObservableObject {
     var currentGrowth: [GrowthEntry] {
         guard let id = selectedBabyId else { return [] }
         return growthEntries.filter { $0.babyId == id }.sorted { $0.time < $1.time }
+    }
+
+    var currentSchedule: [ScheduleEntry] {
+        guard let id = selectedBabyId else { return [] }
+        return scheduleEntries.filter { $0.babyId == id }.sorted { $0.time < $1.time }
     }
 
     var timeline: [TimelineItem] {
