@@ -194,10 +194,10 @@ struct ContentView: View {
 
 struct MilestonesView: View {
     @ObservedObject var store: LogStore
-    @State private var birthDate: Date = Calendar.current.date(byAdding: .month, value: -3, to: Date())!
+    @State private var birthDate: Date = Date()
 
     var body: some View {
-        let upcoming = MilestoneManager.shared.upcoming(for: birthDate)
+        let upcoming = MilestoneManager.shared.upcoming(for: currentBirthDate)
         return VStack(alignment: .leading, spacing: 8) {
             Text("Development Milestones").font(.headline)
             DatePicker("Birth Date", selection: $birthDate, displayedComponents: .date)

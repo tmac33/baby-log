@@ -17,6 +17,7 @@ struct TodayView: View {
         ScrollView {
             VStack(spacing: 16) {
                 header
+                birthDateRow
                 summaryCard
                 rangePicker
                 dailyStatsCard
@@ -49,6 +50,17 @@ struct TodayView: View {
                 Text("Girl").tag(Sex.female)
             }
             .pickerStyle(.menu)
+        }
+    }
+
+    private var birthDateRow: some View {
+        HStack {
+            Text("Birth Date")
+            Spacer()
+            if let idx = store.babies.firstIndex(where: { $0.id == store.selectedBabyId }) {
+                DatePicker("", selection: $store.babies[idx].birthDate, displayedComponents: .date)
+                    .labelsHidden()
+            }
         }
     }
 

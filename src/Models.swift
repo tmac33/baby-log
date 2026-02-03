@@ -4,6 +4,7 @@ import Foundation
 struct Baby: Identifiable, Codable, Equatable {
     let id: UUID
     var name: String
+    var birthDate: Date
 }
 
 enum EntryType: String, Codable {

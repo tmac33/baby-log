@@ -14,7 +14,7 @@ struct GrowthBoardView: View {
                 Button("Add") { showAdd = true }
             }
 
-            GrowthChartsView(entries: store.currentGrowth, sex: sex)
+            GrowthChartsView(entries: store.currentGrowth, sex: sex, birthDate: currentBirthDate)
         }
         .sheet(isPresented: $showAdd) {
             AddGrowthView(store: store)
@@ -34,9 +34,9 @@ struct GrowthChartsView: View {
                     LineMark(x: .value("Date", e.time), y: .value("Height", e.heightCM))
                 }
                 ForEach(WHOReference.shared.points(metric: "lhfa", sex: sex)) { p in
-                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
-                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
-                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
                 }
             }
             .chartYScale(domain: 30...100)
@@ -48,9 +48,9 @@ struct GrowthChartsView: View {
                     LineMark(x: .value("Date", e.time), y: .value("Weight", e.weightKG))
                 }
                 ForEach(WHOReference.shared.points(metric: "wfa", sex: sex)) { p in
-                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
-                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
-                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
                 }
             }
             .chartYScale(domain: 2...20)
@@ -62,9 +62,9 @@ struct GrowthChartsView: View {
                     LineMark(x: .value("Date", e.time), y: .value("Head", e.headCircumferenceCM))
                 }
                 ForEach(WHOReference.shared.points(metric: "hcfa", sex: sex)) { p in
-                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
-                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
-                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Date", addDays(p.day)), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
                 }
             }
             .chartYScale(domain: 30...60)

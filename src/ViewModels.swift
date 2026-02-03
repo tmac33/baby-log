@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 final class LogStore: ObservableObject {
-    @Published var babies: [Baby] = [Baby(id: UUID(), name: "Baby") ]
+    @Published var babies: [Baby] = [Baby(id: UUID(), name: "Baby", birthDate: Date()) ]
     @Published var selectedBabyId: UUID?
     @Published var feedings: [FeedingEntry] = []
     @Published var diapers: [DiaperEntry] = []
