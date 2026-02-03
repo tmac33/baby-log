@@ -3,6 +3,7 @@ import Charts
 
 struct GrowthBoardView: View {
     @ObservedObject var store: LogStore
+    var sex: Sex
     @State private var showAdd = false
 
     var body: some View {
@@ -13,7 +14,7 @@ struct GrowthBoardView: View {
                 Button("Add") { showAdd = true }
             }
 
-            GrowthChartsView(entries: store.currentGrowth)
+            GrowthChartsView(entries: store.currentGrowth, sex: sex)
         }
         .sheet(isPresented: $showAdd) {
             AddGrowthView(store: store)
@@ -23,26 +24,48 @@ struct GrowthBoardView: View {
 
 struct GrowthChartsView: View {
     let entries: [GrowthEntry]
+    let sex: Sex
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Height (cm)").font(.subheadline)
-            Chart(entries) { e in
-                LineMark(x: .value("Date", e.time), y: .value("Height", e.heightCM))
+            Chart {
+                ForEach(entries) { e in
+                    LineMark(x: .value("Date", e.time), y: .value("Height", e.heightCM))
+                }
+                ForEach(WHOReference.shared.points(metric: "lhfa", sex: sex)) { p in
+                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                }
             }
             .chartYScale(domain: 30...100)
             .frame(height: 140)
 
             Text("Weight (kg)").font(.subheadline)
-            Chart(entries) { e in
-                LineMark(x: .value("Date", e.time), y: .value("Weight", e.weightKG))
+            Chart {
+                ForEach(entries) { e in
+                    LineMark(x: .value("Date", e.time), y: .value("Weight", e.weightKG))
+                }
+                ForEach(WHOReference.shared.points(metric: "wfa", sex: sex)) { p in
+                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                }
             }
             .chartYScale(domain: 2...20)
             .frame(height: 140)
 
             Text("Head Circumference (cm)").font(.subheadline)
-            Chart(entries) { e in
-                LineMark(x: .value("Date", e.time), y: .value("Head", e.headCircumferenceCM))
+            Chart {
+                ForEach(entries) { e in
+                    LineMark(x: .value("Date", e.time), y: .value("Head", e.headCircumferenceCM))
+                }
+                ForEach(WHOReference.shared.points(metric: "hcfa", sex: sex)) { p in
+                    LineMark(x: .value("Day", p.day), y: .value("P50", p.p50)).foregroundStyle(.green).lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+                    LineMark(x: .value("Day", p.day), y: .value("P3", p.p3)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                    LineMark(x: .value("Day", p.day), y: .value("P97", p.p97)).foregroundStyle(.gray).lineStyle(StrokeStyle(lineWidth: 1, dash: [2]))
+                }
             }
             .chartYScale(domain: 30...60)
             .frame(height: 140)

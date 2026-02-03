@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var selectedRange: TimeRange = .today
     @State private var shareItem: ShareItem? = nil
     @State private var reminderMinutes: Double = 120
+    @State private var selectedSex: Sex = .male
     private let statsCalc = StatsCalculator()
     private let exporter = CSVExporter()
     @State private var showAddFeed = false
@@ -32,6 +33,11 @@ struct ContentView: View {
                     ForEach(store.babies) { b in
                         Text(b.name).tag(Optional(b.id))
                     }
+                }
+                .pickerStyle(.segmented)
+                Picker("Sex", selection: $selectedSex) {
+                    Text("Boy").tag(Sex.male)
+                    Text("Girl").tag(Sex.female)
                 }
                 .pickerStyle(.segmented)
                 Picker("Range", selection: $selectedRange) {
