@@ -5,14 +5,26 @@ final class LogStore: ObservableObject {
     @Published var feedings: [FeedingEntry] = []
     @Published var diapers: [DiaperEntry] = []
 
+    init() {
+        load()
+    }
+
     func addFeeding(amount: Int, time: Date = Date(), note: String? = nil) {
         let entry = FeedingEntry(id: UUID(), time: time, amountML: amount, note: note)
         feedings.insert(entry, at: 0)
+        Persistence.shared.saveFeedings(feedings)
     }
 
     func addDiaper(type: DiaperType, time: Date = Date(), note: String? = nil) {
         let entry = DiaperEntry(id: UUID(), time: time, type: type, note: note)
         diapers.insert(entry, at: 0)
+        Persistence.shared.saveDiapers(diapers)
+    }
+
+
+    private func load() {
+        feedings = Persistence.shared.loadFeedings()
+        diapers = Persistence.shared.loadDiapers()
     }
 
     var timeline: [TimelineItem] {
